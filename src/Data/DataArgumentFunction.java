@@ -12,12 +12,12 @@ public class DataArgumentFunction {
     }
 
 
-    public String getWriteInFileNameFile() {
-        return writeInFileNameFile;
+    public String getWriteInFileNamePrefix() {
+        return writeInFileNamePrefix;
     }
 
-    public void setWriteInFileNameFile(String writeInFileNameFile) {
-        this.writeInFileNameFile = writeInFileNameFile;
+    public void setWriteInFileNamePrefix(String writeInFileNameFile) {
+        this.writeInFileNamePrefix = writeInFileNameFile;
     }
 
     public boolean isWriteInFileRewrite() {
@@ -29,15 +29,15 @@ public class DataArgumentFunction {
     }
 
     public String getReadFileFile() {
-        return ReadFileFile;
+        return readFileFile;
     }
 
     public void setReadFileFile(String readFileFile) {
-        ReadFileFile = readFileFile;
+        readFileFile = readFileFile;
     }
 
-    private String writeInFileNameFile="";
+    private String writeInFileNamePrefix="";
     private boolean writeInFileRewrite=false;
-    private String  ReadFileFile="";
+    private String  readFileFile="";
 
 }

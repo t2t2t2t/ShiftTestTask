@@ -28,8 +28,9 @@ public abstract class DataClass<T> {
         this.dataList = dataList;
     }
 
-    public static void ReadFile(String file) {
+    public static void ReadFile() {
         //todo сделать правильныый вод для полного вода исопльзуя регулрные выржения
+        String file=DataArgumentFunction.getInstance().getReadFileFile();
 
         File filePath = new File(file);
 
@@ -44,9 +45,8 @@ public abstract class DataClass<T> {
         }
     }
 
-    //todo переписать что бы было без аргументов
 
-    public static void CheckTypeOfObjectInString(String str) {
+    private static void CheckTypeOfObjectInString(String str) {
         DataManager dataManager = DataManager.getInstance();
         if (str.matches("-?\\d+")) {
             dataManager.getDataInteger().getDataList().add(Long.valueOf(str));
@@ -57,7 +57,13 @@ public abstract class DataClass<T> {
         }
     }
 
-    public void writeInFile(String nameFile,boolean rewrite){
+    public void writeInFile(){
+
+        boolean rewrite= DataArgumentFunction.getInstance().isWriteInFileRewrite();
+
+        Class<?> clazz=dataList.getFirst().getClass();
+        String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
+
         if(!dataList.isEmpty())
         {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(nameFile, rewrite))) {
@@ -68,6 +74,18 @@ public abstract class DataClass<T> {
                 System.err.println("Ошибка записи файла: " + nameFile);
             }
         }
+    }
+
+    private String getNameForFile(Class<?> clazz){
+        switch (clazz.getSimpleName()) {
+            case ("Long"):
+                return "integer.txt";
+            case ("Double"):
+                return "float.txt";
+            case ("String"):
+                return "String.txt";
+        }
+        return "data.txt";
     }
 
     public void shortStatic(){

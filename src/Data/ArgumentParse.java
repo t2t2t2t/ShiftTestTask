@@ -29,7 +29,6 @@ public class ArgumentParse {
         flags.put("-f", false);
 
         functions = new HashMap<>();
-       // functions.put("-a", DataClass::writeInFile);
         functions.put("-s", DataClass::longStatic);
         functions.put("-f", DataClass::shortStatic);
     }
@@ -42,8 +41,8 @@ public class ArgumentParse {
     }
 
 
-    public void executeFunction(DataClass<?> dataClass) {
 
+    public void executeFunction(DataClass<?> dataClass) {
         for (Map.Entry<String, Boolean> entry : flags.entrySet()) {
             String flag = entry.getKey();
             Boolean isExecute = entry.getValue();

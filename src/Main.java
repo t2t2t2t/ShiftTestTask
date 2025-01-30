@@ -21,13 +21,13 @@ public  class Main {
         ReadFile("text1.txt");
 
 
-        dataManager.getDataFloat().writeInFile("float4.txt", false);
+        dataManager.getDataFloat().writeInFile();
         argumentParse.executeFunction(dataManager.getDataFloat());
 
-        dataManager.getDataInteger().writeInFile("integer.txt", false);
+        //dataManager.getDataInteger().writeInFile("integer.txt", false);
         argumentParse.executeFunction(dataManager.getDataInteger());
 
-        dataManager.getDataString().writeInFile("string.txt", false);
+        //dataManager.getDataString().writeInFile("string.txt", false);
         argumentParse.executeFunction(dataManager.getDataString());
 
 
