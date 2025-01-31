@@ -38,6 +38,6 @@ public class DataArgumentFunction {
 
     private String writeInFileNamePrefix="";
     private boolean writeInFileRewrite=false;
-    private String  readFileFile="";
+    private String  readFileFile="text1.txt";
 
 }

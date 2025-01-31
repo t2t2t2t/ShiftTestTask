@@ -50,7 +50,7 @@ public abstract class DataClass<T> {
         DataManager dataManager = DataManager.getInstance();
         if (str.matches("-?\\d+")) {
             dataManager.getDataInteger().getDataList().add(Long.valueOf(str));
-        } else if (str.matches("-?\\d+([.,]\\d+)?([Ee][+-]?\\d+)?")) {
+        } else if (str.matches("-?\\d+(.\\d+)?([Ee][+-]?\\d+)?")) {
             dataManager.getDataFloat().getDataList().add(Double.valueOf(str));
         } else {
             dataManager.getDataString().getDataList().add(str);
@@ -58,14 +58,12 @@ public abstract class DataClass<T> {
     }
 
     public void writeInFile(){
-
         boolean rewrite= DataArgumentFunction.getInstance().isWriteInFileRewrite();
-
-        Class<?> clazz=dataList.getFirst().getClass();
-        String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
-
         if(!dataList.isEmpty())
         {
+            Class<?> clazz=dataList.getFirst().getClass();
+            String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
+
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(nameFile, rewrite))) {
                 for(T e:dataList){
                     writer.write(e+"\n");

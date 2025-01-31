@@ -2,6 +2,7 @@ package Data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ArgumentParse {
@@ -33,11 +34,33 @@ public class ArgumentParse {
         functions.put("-f", DataClass::shortStatic);
     }
 
-    public  void chooseArg(String arg){
-        if(getFlags().containsKey(arg)){
-            getFlags().put(arg,true);
+    public  void chooseArg(String[] args){
+        int indexO=-1;
+        int indexP=-1;
+        for (int i=0; i<args.length;i++) {
+            String currentArg = args[i];
+            if (getFlags().containsKey(currentArg)) {
+                getFlags().put(currentArg, true);
+                if (currentArg.equals("-a")) {
+                    DataArgumentFunction.getInstance().setWriteInFileRewrite(true);
+                }
+                else if (currentArg.equals("-o") && getFlags().get("-p").equals(false)) {
+                    indexO = args.length-1;
+                    indexP=args.length;
+                }
+                else if (currentArg.equals("-o") && getFlags().get("-p").equals(true)) {
+                    indexO = args.length;
+                    indexP=args.length-1;
+                }
+
+            } else System.out.println("This flag don`t exist :" + args[i]);
         }
-        else System.out.println("This flag don`t exist :"+arg);
+        if(getFlags().get("-p").equals(true)){
+            DataArgumentFunction.getInstance().setWriteInFileNamePrefix(args[indexP]);
+        }
+        if(getFlags().get("-o").equals(true)){
+            DataArgumentFunction.getInstance().setReadFileFile(args[indexO]);
+        }
     }
 
 
