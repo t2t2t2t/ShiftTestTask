@@ -28,49 +28,17 @@ public  class Main {
 
         DataManager dataManager = DataManager.getInstance();
 
-      //  ReadFile("text1.txt");
 
         DataClass.ReadFile();
-        dataManager.getDataFloat().writeInFile();
+
         argumentParse.executeFunction(dataManager.getDataFloat());
+        dataManager.getDataFloat().writeInFile();
 
-        dataManager.getDataInteger().writeInFile();
         argumentParse.executeFunction(dataManager.getDataInteger());
+        dataManager.getDataInteger().writeInFile();
 
-        dataManager.getDataString().writeInFile();
         argumentParse.executeFunction(dataManager.getDataString());
-
-
+        dataManager.getDataString().writeInFile();
     }
-
-
-    public static void ReadFile(String file) {
-        //todo сделать правильныый вод для полного вода исопльзуя регулрные выржения
-
-        File filePath = new File(file);
-
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                CheckTypeOfObjectInString(line);
-            }
-        } catch (IOException e) {
-            System.err.println("Файл не найден, по адресу:" + filePath.getAbsolutePath());
-        }
-    }
-
-
-    public static void CheckTypeOfObjectInString(String str) {
-        DataManager dataManager = DataManager.getInstance();
-        if (str.matches("-?\\d+")) {
-            dataManager.getDataInteger().getDataList().add(Long.valueOf(str));
-        } else if (str.matches("-?\\d+([.,]\\d+)?([Ee][+-]?\\d+)?")) {
-            dataManager.getDataFloat().getDataList().add(Double.valueOf(str));
-        } else {
-            dataManager.getDataString().getDataList().add(str);
-        }
-    }
-
 }
 

@@ -35,9 +35,18 @@ public class ArgumentParse {
     }
 
     public  void chooseArg(String[] args){
-        int indexO=-1;
-        int indexP=-1;
-        for (int i=0; i<args.length;i++) {
+        int countFlag=0;
+        for (String arg : args) {
+            if (arg.startsWith("-")) {
+                countFlag++;
+            }
+        }
+
+
+        int indexO=0;
+        int indexP=0;
+
+        for (int i=0; i<countFlag;i++) {
             String currentArg = args[i];
             if (getFlags().containsKey(currentArg)) {
                 getFlags().put(currentArg, true);
@@ -45,22 +54,36 @@ public class ArgumentParse {
                     DataArgumentFunction.getInstance().setWriteInFileRewrite(true);
                 }
                 else if (currentArg.equals("-o") && getFlags().get("-p").equals(false)) {
-                    indexO = args.length-1;
-                    indexP=args.length;
+                    indexO = 1;
                 }
                 else if (currentArg.equals("-o") && getFlags().get("-p").equals(true)) {
-                    indexO = args.length;
-                    indexP=args.length-1;
+                    indexO =2;
                 }
-
+                else if (currentArg.equals("-p") && getFlags().get("-o").equals(false)) {
+                    indexP = 1;
+                }
+                else if (currentArg.equals("-p") && getFlags().get("-o").equals(true)) {
+                    indexP = 2;
+                }
             } else System.out.println("This flag don`t exist :" + args[i]);
         }
+
         if(getFlags().get("-p").equals(true)){
-            DataArgumentFunction.getInstance().setWriteInFileNamePrefix(args[indexP]);
+            DataArgumentFunction.getInstance().setWriteInFileNamePrefix(args[countFlag+indexP-1]);
+
         }
+
         if(getFlags().get("-o").equals(true)){
-            DataArgumentFunction.getInstance().setReadFileFile(args[indexO]);
+            DataArgumentFunction.getInstance().setWritePath(args[countFlag+indexO-1]);
         }
+
+        System.out.println( DataArgumentFunction.getInstance().getWritePath());
+
+        for (int i = countFlag+indexO+indexP; i < args.length ; i++) {
+            DataArgumentFunction.getInstance().setAddReadFileFile(args[i]);
+        }
+
+
     }
 
 

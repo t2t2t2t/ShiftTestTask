@@ -29,20 +29,20 @@ public abstract class DataClass<T> {
     }
 
     public static void ReadFile() {
-        //todo сделать правильныый вод для полного вода исопльзуя регулрные выржения
-        String file=DataArgumentFunction.getInstance().getReadFileFile();
-
-        File filePath = new File(file);
-
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                CheckTypeOfObjectInString(line);
+        List<String> files=DataArgumentFunction.getInstance().getReadFileFile();
+        for (int i = 0; i < files.size(); i++) {
+            String file=files.get(i);
+            File filePath = new File(file);
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    CheckTypeOfObjectInString(line);
+                }
+            } catch (IOException e) {
+                System.err.println("Файл не найден, по адресу:" + filePath.getAbsolutePath());
             }
-        } catch (IOException e) {
-            System.err.println("Файл не найден, по адресу:" + filePath.getAbsolutePath());
         }
+
     }
 
 
@@ -59,12 +59,13 @@ public abstract class DataClass<T> {
 
     public void writeInFile(){
         boolean rewrite= DataArgumentFunction.getInstance().isWriteInFileRewrite();
+        String path=DataArgumentFunction.getInstance().getWritePath();
         if(!dataList.isEmpty())
         {
             Class<?> clazz=dataList.getFirst().getClass();
             String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(nameFile, rewrite))) {
+            System.out.println(path+nameFile);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"\\"+nameFile, rewrite))) {
                 for(T e:dataList){
                     writer.write(e+"\n");
                 }
@@ -77,9 +78,9 @@ public abstract class DataClass<T> {
     private String getNameForFile(Class<?> clazz){
         switch (clazz.getSimpleName()) {
             case ("Long"):
-                return "integer.txt";
+                return "Integer.txt";
             case ("Double"):
-                return "float.txt";
+                return "Float.txt";
             case ("String"):
                 return "String.txt";
         }
