@@ -9,13 +9,13 @@ public abstract class DataClass<T> {
         return forPrintLineUp;
     }
 
-    private String forPrintLineUp = "╔═══════════════════════════════════════════╗";
+    private final String forPrintLineUp = "╔═══════════════════════════════════════════╗";
 
     public String getForPrintLineBottom() {
         return forPrintLineBottom;
     }
 
-    private String forPrintLineBottom = "╚═══════════════════════════════════════════╝";
+    private final String forPrintLineBottom = "╚═══════════════════════════════════════════╝";
 
 
     private List<T> dataList=new ArrayList<>();
@@ -50,8 +50,13 @@ public abstract class DataClass<T> {
         DataManager dataManager = DataManager.getInstance();
         if (str.matches("-?\\d+")) {
             dataManager.getDataInteger().getDataList().add(Long.valueOf(str));
-        } else if (str.matches("-?\\d+(.\\d+)?([Ee][+-]?\\d+)?")) {
-            dataManager.getDataFloat().getDataList().add(Double.valueOf(str));
+        } else if (str.matches("-?\\d+([.,]\\d+)?([Ee][+-]?\\d+)?")) {
+            str = str.replace(',', '.');
+            try {
+                dataManager.getDataFloat().getDataList().add(Double.valueOf(str));
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid number format: " + str);
+            }
         } else {
             dataManager.getDataString().getDataList().add(str);
         }
@@ -64,13 +69,14 @@ public abstract class DataClass<T> {
         {
             Class<?> clazz=dataList.getFirst().getClass();
             String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
-            System.out.println(path+nameFile);
+
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"\\"+nameFile, rewrite))) {
                 for(T e:dataList){
                     writer.write(e+"\n");
                 }
+                System.out.println("Data successfully written to file: "+path+"\\"+nameFile);
             } catch (IOException e) {
-                System.err.println("Ошибка записи файла: " + nameFile);
+                System.err.println("File recording error: " + nameFile);
             }
         }
     }
@@ -88,7 +94,7 @@ public abstract class DataClass<T> {
     }
 
     public void shortStatic(){
-        System.out.println("Count elements in: "+ getDataList().size());
+        System.out.printf("Count elements in: {%d}, type: {%s}%n", getDataList().size(), dataList.getFirst().getClass().getSimpleName());
     }
 
     public void longStatic(){

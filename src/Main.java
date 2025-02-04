@@ -14,7 +14,8 @@ import java.util.Arrays;
 //A для пераписи
 //S крастная статстика
 //F длинная
-//todo исправить для ввод для вывода добавить ввод несольких файлах исправить на запятой цифры
+
+
 public  class Main {
 
     public static void main(String[] args) {
