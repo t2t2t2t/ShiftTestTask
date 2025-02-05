@@ -1,5 +1,6 @@
 package Data;
-//singleton что бы вызывать все класс в одном месте
+//singleton
+
 public class DataManager {
 
     private DataInteger dataInteger=new DataInteger();

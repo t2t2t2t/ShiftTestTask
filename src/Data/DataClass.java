@@ -3,7 +3,7 @@ package Data;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//абстрактный класс для Integer String Float данных
 public abstract class DataClass<T> {
     public String getForPrintLineUp() {
         return forPrintLineUp;
@@ -28,39 +28,6 @@ public abstract class DataClass<T> {
         this.dataList = dataList;
     }
 
-    public static void ReadFile() {
-        List<String> files=DataArgumentFunction.getInstance().getReadFileFile();
-        for (int i = 0; i < files.size(); i++) {
-            String file=files.get(i);
-            File filePath = new File(file);
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    CheckTypeOfObjectInString(line);
-                }
-            } catch (IOException e) {
-                System.err.println("Файл не найден, по адресу:" + filePath.getAbsolutePath());
-            }
-        }
-
-    }
-
-
-    private static void CheckTypeOfObjectInString(String str) {
-        DataManager dataManager = DataManager.getInstance();
-        if (str.matches("-?\\d+")) {
-            dataManager.getDataInteger().getDataList().add(Long.valueOf(str));
-        } else if (str.matches("-?\\d+([.,]\\d+)?([Ee][+-]?\\d+)?")) {
-            str = str.replace(',', '.');
-            try {
-                dataManager.getDataFloat().getDataList().add(Double.valueOf(str));
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid number format: " + str);
-            }
-        } else {
-            dataManager.getDataString().getDataList().add(str);
-        }
-    }
 
     public void writeInFile(){
         boolean rewrite= DataArgumentFunction.getInstance().isWriteInFileRewrite();
@@ -69,14 +36,14 @@ public abstract class DataClass<T> {
         {
             Class<?> clazz=dataList.getFirst().getClass();
             String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"\\"+nameFile, rewrite))) {
+            String fullPath = path + File.separator + nameFile;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, rewrite))) {
                 for(T e:dataList){
                     writer.write(e+"\n");
                 }
-                System.out.println("Data successfully written to file: "+path+"\\"+nameFile);
+                System.out.println("Data successfully written to file: "+fullPath);
             } catch (IOException e) {
-                System.err.println("File recording error: " + nameFile);
+                System.err.println("File recording error: " + fullPath);
             }
         }
     }

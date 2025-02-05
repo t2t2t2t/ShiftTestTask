@@ -2,10 +2,9 @@ package Data;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 
-public class ArgumentParse {
+public class ArgumentParser  {
 
 
     public void setFlags(Map<String, Integer> flags) {
@@ -21,7 +20,7 @@ public class ArgumentParse {
     private Map<String, Consumer<DataClass<?>>> functions;
 
 
-    public   ArgumentParse() {
+    public   ArgumentParser() {
         flags = new HashMap<>();
         flags.put("-o", -1);
         flags.put("-p", -1);
@@ -30,11 +29,11 @@ public class ArgumentParse {
         flags.put("-f", -1);
 
         functions = new HashMap<>();
-        functions.put("-s", DataClass::longStatic);
-        functions.put("-f", DataClass::shortStatic);
+        functions.put("-s", DataClass::shortStatic);
+        functions.put("-f", DataClass::longStatic);
     }
-
-    public  void chooseArg(String[] args){
+    //обработка аргументов
+    public  void processingArg(String[] args){
         int countFlag=-1;
         for (String arg : args) {
             if (arg.startsWith("-")) {
@@ -55,27 +54,33 @@ public class ArgumentParse {
                 }
             } else System.out.println("This flag don`t exist :" + args[i]);
         }
-
-        if(getFlags().get("-p")>getFlags().get("-o")){
-            indexP=1;
-            DataArgumentFunction.getInstance().setWriteInFileNamePrefix(args[countFlag+1]);
-            if (getFlags().get("-o")!=-1){
-                indexO=1;
-                DataArgumentFunction.getInstance().setWritePath(args[countFlag+2]);
+        //Ввод данных для флагов p и o
+        if (getFlags().get("-p") != -1 && getFlags().get("-o") != -1) {
+            if (getFlags().get("-p") < getFlags().get("-o")) {
+                indexP = 1;
+                indexO = 2;
+            } else {
+                indexP = 2;
+                indexO = 1;
+            }
+        } else {
+            if (getFlags().get("-p") != -1) {
+                indexP = 1;
+            } else if (getFlags().get("-o") != -1) {
+                indexO = 1;
             }
         }
 
-        if(getFlags().get("-o")>getFlags().get("-p")){
-            indexO=1;
-            DataArgumentFunction.getInstance().setWritePath(args[countFlag+1]);
-            if (getFlags().get("-p")!=-1){
-                indexP=1;
-                DataArgumentFunction.getInstance().setWriteInFileNamePrefix(args[countFlag+2]);
-            }
+        if (indexP != 0) {
+            DataArgumentFunction.getInstance().setWriteInFileNamePrefix(args[countFlag + indexP]);
         }
+
+        if (indexO != 0) {
+            DataArgumentFunction.getInstance().setWritePath(args[countFlag + indexO]);
+        }
+
 
         //System.out.println( DataArgumentFunction.getInstance().getWritePath());
-
         for (int i = countFlag+1+indexO+indexP; i < args.length ; i++) {
             DataArgumentFunction.getInstance().setAddReadFileFile(args[i]);
         }
@@ -84,7 +89,7 @@ public class ArgumentParse {
     }
 
 
-
+    //функции которые включаются при включении флагов
     public void executeFunction(DataClass<?> dataClass) {
         for (Map.Entry<String, Integer> entry : flags.entrySet()) {
             String flag = entry.getKey();

@@ -2,27 +2,13 @@ package Data;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//singlton для функций
 public class DataArgumentFunction {
 
     private String writeInFileNamePrefix="";
     private boolean writeInFileRewrite=false;
-
-    public List<String> getReadFileFile() {
-        return readFileFile;
-    }
-
-    public void setReadFileFile(List<String> readFileFile) {
-        this.readFileFile = readFileFile;
-    }
-
-    public void setAddReadFileFile(String readFileFile) {
-        this.readFileFile.add(readFileFile);
-    }
-
     private List<String> readFileFile =new ArrayList<>();
     private String writePath="";
-
     private static DataArgumentFunction instance;
 
     public static DataArgumentFunction getInstance (){
@@ -30,6 +16,19 @@ public class DataArgumentFunction {
             return instance=new DataArgumentFunction();
         }else
             return instance;
+    }
+
+    public List<String> getReadFileFile() {
+        return readFileFile;
+    }
+
+
+    public void setReadFileFile(List<String> readFileFile) {
+        this.readFileFile = readFileFile;
+    }
+
+    public void setAddReadFileFile(String readFileFile) {
+        this.readFileFile.add(readFileFile);
     }
 
 
@@ -48,7 +47,6 @@ public class DataArgumentFunction {
     public void setWriteInFileRewrite(boolean writeInFileRewrite) {
         this.writeInFileRewrite = writeInFileRewrite;
     }
-
 
     public String getWritePath() {
         return writePath;
