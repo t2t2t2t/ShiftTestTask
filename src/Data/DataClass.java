@@ -30,13 +30,18 @@ public abstract class DataClass<T> {
 
 
     public void writeInFile(){
-        boolean rewrite= DataArgumentFunction.getInstance().isWriteInFileRewrite();
-        String path=DataArgumentFunction.getInstance().getWritePath();
+
         if(!dataList.isEmpty())
         {
+            boolean rewrite= DataArgumentFunction.getInstance().isWriteInFileRewrite();
+            String path=DataArgumentFunction.getInstance().getWritePath();
+            if(path!=""){
+                path.concat(File.separator);
+            }
             Class<?> clazz=dataList.getFirst().getClass();
             String nameFile=DataArgumentFunction.getInstance().getWriteInFileNamePrefix()+getNameForFile(clazz);
-            String fullPath = path + File.separator + nameFile;
+
+            String fullPath = path + nameFile;
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, rewrite))) {
                 for(T e:dataList){
                     writer.write(e+"\n");
